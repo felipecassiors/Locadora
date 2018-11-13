@@ -35,3 +35,5 @@ nbdist/
 .nb-gradle/
 
 # End of https://www.gitignore.io/api/java,netbeans
+
+!/lib/MySQLDriver/mysql-connector-java-8.0.13.jar
