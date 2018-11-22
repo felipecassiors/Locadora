@@ -10,23 +10,13 @@ import java.util.List;
 
 public class FilmeDAO {
     
-    private static final String URL = "jdbc:mysql://localhost:3306/locadora?useSSL=false&serverTimezone=Brazil/East";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
-
-    public static Connection conectaBanco() throws SQLException
-    {
-        DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());	
-        return DriverManager.getConnection(URL, USER, PASSWORD);
-    }
-    
     public boolean inserir(Filme filme)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         boolean sucesso = true;
         try {
-            connection = conectaBanco();
+            connection = ConexaoBanco.conectaBanco();
             preparedStatement = connection.prepareStatement("INSERT INTO filme(titulo,genero,duracao,preco) VALUES(?,?,?,?)");
             preparedStatement.setString(1, filme.getTitulo());
             preparedStatement.setString(2, filme.getGenero());
@@ -58,7 +48,7 @@ public class FilmeDAO {
         PreparedStatement preparedStatement = null;
         boolean sucesso = true;
         try {
-            connection = conectaBanco();
+            connection = ConexaoBanco.conectaBanco();
             preparedStatement = connection.prepareStatement("UPDATE filme SET titulo = ?, genero = ?, duracao = ?, preco = ? WHERE id = ?");
             preparedStatement.setString(1, filme.getTitulo());
             preparedStatement.setString(2, filme.getGenero());
@@ -91,7 +81,7 @@ public class FilmeDAO {
         PreparedStatement preparedStatement = null;
         boolean sucesso = true;
         try {
-            connection = conectaBanco();
+            connection = ConexaoBanco.conectaBanco();
             preparedStatement = connection.prepareStatement("DELETE FROM filme WHERE id = ?");
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
@@ -121,7 +111,7 @@ public class FilmeDAO {
         ResultSet resultSet = null;
         Filme filme = null;
         try {
-            connection = conectaBanco();
+            connection = ConexaoBanco.conectaBanco();
             preparedStatement = connection.prepareStatement("SELECT * FROM filme WHERE id = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
@@ -161,7 +151,7 @@ public class FilmeDAO {
         ResultSet resultSet = null;
         List<Filme> filmes = new ArrayList<>();
         try {
-            connection = conectaBanco();
+            connection = ConexaoBanco.conectaBanco();
             preparedStatement = connection.prepareStatement("SELECT * FROM filme");
             resultSet = preparedStatement.executeQuery();
             while(resultSet != null && resultSet.next()) {
@@ -201,7 +191,7 @@ public class FilmeDAO {
         ResultSet resultSet = null;
         List<Filme> filmes = new ArrayList<>();
         try {
-            connection = conectaBanco();
+            connection = ConexaoBanco.conectaBanco();
             preparedStatement = connection.prepareStatement("SELECT * FROM filme WHERE titulo LIKE ?");
             preparedStatement.setString(1, "%" + titulo + "%");
             resultSet = preparedStatement.executeQuery();

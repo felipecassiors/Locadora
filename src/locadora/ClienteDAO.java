@@ -10,23 +10,13 @@ import java.util.List;
 
 public class ClienteDAO {
     
-    private static final String URL = "jdbc:mysql://localhost:3306/locadora?useSSL=false&serverTimezone=Brazil/East";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
-
-    public static Connection conectaBanco() throws SQLException
-    {
-        DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());	
-        return DriverManager.getConnection(URL, USER, PASSWORD);
-    }
-    
     public boolean inserir(Cliente cliente)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         boolean sucesso = true;
         try {
-            connection = conectaBanco();
+            connection = ConexaoBanco.conectaBanco();
             preparedStatement = connection.prepareStatement("INSERT INTO cliente(nome,telefone,email,sexo,idade) VALUES(?,?,?,?,?)");
             preparedStatement.setString(1, cliente.getNome());
             preparedStatement.setString(2, cliente.getTelefone());
@@ -59,7 +49,7 @@ public class ClienteDAO {
         PreparedStatement preparedStatement = null;
         boolean sucesso = true;
         try {
-            connection = conectaBanco();
+            connection = ConexaoBanco.conectaBanco();
             preparedStatement = connection.prepareStatement("UPDATE cliente SET nome = ?, telefone = ?, email = ?, sexo = ?, idade = ? WHERE id = ?");
             preparedStatement.setString(1, cliente.getNome());
             preparedStatement.setString(2, cliente.getTelefone());
@@ -93,7 +83,7 @@ public class ClienteDAO {
         PreparedStatement preparedStatement = null;
         boolean sucesso = true;
         try {
-            connection = conectaBanco();
+            connection = ConexaoBanco.conectaBanco();
             preparedStatement = connection.prepareStatement("DELETE FROM cliente WHERE id = ?");
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
@@ -123,7 +113,7 @@ public class ClienteDAO {
         ResultSet resultSet = null;
         Cliente cliente =  null;
         try {
-            connection = conectaBanco();
+            connection = ConexaoBanco.conectaBanco();
             preparedStatement = connection.prepareStatement("SELECT * FROM cliente WHERE id = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
@@ -164,7 +154,7 @@ public class ClienteDAO {
         ResultSet resultSet = null;
         List<Cliente> clientes = new ArrayList<>();
         try {
-            connection = conectaBanco();
+            connection = ConexaoBanco.conectaBanco();
             preparedStatement = connection.prepareStatement("SELECT * FROM cliente");
             resultSet = preparedStatement.executeQuery();
             while(resultSet != null && resultSet.next()) {
@@ -205,7 +195,7 @@ public class ClienteDAO {
         ResultSet resultSet = null;
         List<Cliente> clientes = new ArrayList<>();
         try {
-            connection = conectaBanco();
+            connection = ConexaoBanco.conectaBanco();
             preparedStatement = connection.prepareStatement("SELECT * FROM cliente WHERE nome LIKE ?");
             preparedStatement.setString(1, "%" + nome + "%");
             resultSet = preparedStatement.executeQuery();
